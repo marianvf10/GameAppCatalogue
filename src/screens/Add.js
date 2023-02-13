@@ -10,13 +10,17 @@ import { collection, addDoc } from "firebase/firestore";
 export default function Add() {
 
 
-  const [datos, estableceDatos] = useState('');
+   
+  const [data, setData] = useState('');
 
-  const onChangeDate = (date) => {
-    console.log(date);
-    setNewItem({...newItem,releaseDate:date});
-  }
- 
+  const onChangeDate = (childData) => {
+  setData(childData);
+  setNewItem({...newItem,releaseDate:data});
+  
+  console.log('hola');
+  console.log(data);
+  
+};
   const navigation = useNavigation();
 
   const [selectedImage, setSelectedImage] = useState(null);
@@ -66,7 +70,7 @@ export default function Add() {
       <TextInput style={styles.inputContainer} 
       placeholder="Genre"
       onChangeText={(text)=>setNewItem({...newItem,genre:text})} />
-      <MyDatePicker onChangeDate={onChangeDate}/>
+      <MyDatePicker onChangeDate = {onChangeDate}/>
       <View style={styles.buttonContainer}>
         <Pressable style={styles.button}
           onPress={pickImageAsync}>
