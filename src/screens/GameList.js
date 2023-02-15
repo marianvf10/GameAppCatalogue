@@ -11,6 +11,12 @@ export default function GameList() {
     const navigation = useNavigation();
   
     const [games, setGames] = useState([]); //inicializo como arreglo vacio
+
+    React.useLayoutEffect(()=>{
+      navigation.setOptions({
+        headerRight:()=> <Button title = 'Add' onPress={()=> navigation.navigate('Add')}/>
+      })
+    },[])
   
     React.useEffect(() => {
       const collectionRef = collection(database,'games');
@@ -37,7 +43,6 @@ export default function GameList() {
   
         <Text>Games</Text>
         {games.map(game => <Game key={game.id} {...game}/>)}
-        <Button title='go to add screen' onPress={() => navigation.navigate('Add')}/>
       
       </ScrollView>
       
