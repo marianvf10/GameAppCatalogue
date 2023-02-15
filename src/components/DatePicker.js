@@ -2,9 +2,8 @@ import { View, Text, Button, StyleSheet, Platform } from "react-native";
 import React from "react";
 import { useState } from "react";
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { TextInput } from "react-native-gesture-handler";
 
-const MyDatePicker = (onChangeDate) => {
+const MyDatePicker = ({onChangeDate}) => {
   
   const [date,setDate] = useState(new Date());
   const [mode,setMode] = useState('date');
@@ -21,9 +20,6 @@ const MyDatePicker = (onChangeDate) => {
 
     setText(fDate);
 
-    
-
-
   }
   const showMode = (currentMode) => {
     setShow(true);
@@ -34,7 +30,7 @@ const MyDatePicker = (onChangeDate) => {
       <Text style = {{fontWeight:'bold', fontSize: 20}}>{text}</Text>
       <View style = {{margin:20}}>
         <Button title='Ingresar fecha estreno' onPress={() =>{showMode('date')}}/>
-        <Button title ='click child' onClick={()=> {onChangeDate(date)}}/>
+        <Button title ='click child' onPress={()=>onChangeDate(date)}/>
        
       </View>
 
