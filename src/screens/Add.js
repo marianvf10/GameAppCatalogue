@@ -14,12 +14,11 @@ export default function Add() {
   const [data, setData] = useState('');
 
   const onChangeDate = (childData) => {
-  setData(childData);
-  setNewItem({...newItem,releaseDate:data});
-  
-  console.log('hola');
-  console.log(data);
-  
+    
+    let releaseDate = new Date(childData);
+    let rDate = releaseDate;
+    //setData(childData);
+    setNewItem({...newItem,releaseDate:rDate});
 };
   const navigation = useNavigation();
 
@@ -83,7 +82,7 @@ export default function Add() {
         </Pressable>
         <Pressable
           style={styles.button}
-          onPress={() => navigation.navigate("Home")}
+          onPress={() => navigation.navigate('GameList')}
         >
           <Text style={styles.text}>Go to home screen</Text>
         </Pressable>
