@@ -16,8 +16,10 @@ export default function Game({
     return (
         <View style ={styles.gameContainer}>
             <Text style={styles.name}>{name}</Text>
+            <Text style={styles.releaseDate}>{releaseDate}</Text>
             <Text style={styles.price}>{price}</Text>
             <Text style={styles.price}>{genre}</Text>
+            <Text style={styles.price}>{platform}</Text>
 
         </View>
     )
@@ -38,6 +40,11 @@ const styles = StyleSheet.create({
         fontSize: 24,
         fontWeight: 'bold',
         color: 'gray',
+    },
+    releaseDate: {
+        fontSize: 32,
+        fontWeight: 'bold',
+        color: 'red',
     },
     platform: {
         fontSize: 32,
