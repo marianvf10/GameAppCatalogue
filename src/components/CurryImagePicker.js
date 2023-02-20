@@ -1,12 +1,15 @@
 import { View, Text, Image, Button, StyleSheet} from 'react-native'
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import React from 'react'
 import * as ImagePicker from "expo-image-picker";
+import { PracticeContext } from '../../context/PracticeContext';
 import ImageViewer from './ImageViewer';
 
 const CurryImagePicker = () => {
-  
-    const [selectedImage, setSelectedImage] = useState(null);
+
+    const {selectedImage, setSelectedImage} = useContext(PracticeContext);
+    
+    const PlaceholderImage = ''; //ruta de prueba para probar ImagePicker
 
     const pickImageAsync = async () => {
       let result = await ImagePicker.launchImageLibraryAsync({
@@ -17,13 +20,19 @@ const CurryImagePicker = () => {
       });
       if (!result.canceled) {
         setSelectedImage(result.assets[0].uri);
+      } else {
+        alert('You did not select any image.');
       }
+      
     };
   
     return (
     <View style={styles.container}>
       <View style = {styles.imageContainer}>
-        <Image source ={selectedImage}/>
+      <ImageViewer
+          placeholderImageSource={PlaceholderImage}
+          selectedImage={selectedImage}
+        />
       </View>
         <View style={styles.button}>
             <Button title="Elegir Imagen" onPress={pickImageAsync}/>
@@ -44,14 +53,11 @@ const styles = StyleSheet.create({
         borderWidth:1,
         borderColor: 'black',
         width:'80%',
-        height: 150,
-        backgroundColor:'#eee'
+        height: 180,
+        backgroundColor:'#eee',
     },
     button:{
         margin:8
-    },
-    previewImage: {
-      width:'100%'
     }
    
 })
