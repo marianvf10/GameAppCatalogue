@@ -31,7 +31,8 @@ export default function GameList() {
             platform: doc.data().platform,
             price: doc.data().price,
             createAt: doc.data().createAt,
-            genre: doc.data().genre
+            genre: doc.data().genre,
+            releaseDate: doc.data().releaseDate
           }))
         )
       })
