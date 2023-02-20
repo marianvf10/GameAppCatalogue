@@ -1,14 +1,15 @@
 import { View, Text, Button, StyleSheet, Platform } from "react-native";
-import React from "react";
+import React, { useContext } from "react";
 import { useState } from "react";
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { PracticeContext } from "../../context/PracticeContext";
 
-const MyDatePicker = ({onChangeDate}) => {
+const MyDatePicker = () => {
   
-  const [date,setDate] = useState(new Date());
+  const {date,setDate,setText,newItem, setNewItem} = useContext(PracticeContext);
+  
   const [mode,setMode] = useState('date');
   const [show, setShow] = useState(false);
-  const [text,setText] = useState('empty');
 
   const onChange = (event,selectedDate) =>{
     const currentDate = selectedDate || date;
@@ -19,6 +20,7 @@ const MyDatePicker = ({onChangeDate}) => {
     let fDate = tempDate.getDate() + '/' + (tempDate.getMonth()+1) + '/' + tempDate.getFullYear();
 
     setText(fDate);
+    setNewItem({...newItem, releaseDate: fDate })
 
   }
   const showMode = (currentMode) => {
@@ -27,11 +29,9 @@ const MyDatePicker = ({onChangeDate}) => {
   }
   return (
     <View style={styles.container}>
-      <Text style = {{fontWeight:'bold', fontSize: 20}}>{text}</Text>
+
       <View style = {{margin:20}}>
         <Button title='Ingresar fecha estreno' onPress={() =>{showMode('date')}}/>
-        <Button title ='click child' onPress={()=>onChangeDate(date)}/>
-       
       </View>
 
       {show && (
