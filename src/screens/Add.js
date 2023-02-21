@@ -11,14 +11,12 @@ import { PracticeContext } from "../../context/PracticeContext";
 
 export default function Add() {
 
-  const {date,text, newItem, setNewItem} = useContext(PracticeContext);
+  const {text, newItem, setNewItem} = useContext(PracticeContext);
   
   const navigation = useNavigation();
 
   //con esta funcion agrego un nuevo documento a la bd
   const onSend = async () => {
-    let dr = newItem.releaseDate;
-    console.log(dr);
     await addDoc(collection(database, "games"), newItem);
     navigation.goBack();
   };
