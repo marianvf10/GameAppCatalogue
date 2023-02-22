@@ -1,69 +1,84 @@
-import { View, Text, StyleSheet } from 'react-native'
-import React from 'react'
-import {database} from '../../config/firebase';
-import {deleteDoc, doc, updateDoc} from 'firebase/firestore';
-import {AntDesign} from '@expo/vector-icons';
+import { View, Text, StyleSheet, Image } from "react-native";
+import React from "react";
+import { database } from "../../config/firebase";
+import { deleteDoc, doc, updateDoc } from "firebase/firestore";
+import { AntDesign } from "@expo/vector-icons";
+import ImageViewer from "./ImageViewer";
 
 export default function Game({
-    id,
-    name,
-    platform,
-    price,
-    genre,
-    releaseDate,
-    image
+  name,
+  platform,
+  price,
+  genre,
+  releaseDate,
+  imageUri,
 }) {
-    return (
-        <View style ={styles.gameContainer}>
-            <Text style={styles.name}>{name}</Text>
-            <Text style={styles.releaseDate}>{releaseDate}</Text>
-            <Text style={styles.price}>{price}</Text>
-            <Text style={styles.price}>{genre}</Text>
-            <Text style={styles.price}>{platform}</Text>
-
-        </View>
-    )
+  return (
+    <View style={styles.gameContainer}>
+      <Text style={styles.name}>{name}</Text>
+      <Text>{imageUri}</Text>
+      <View style={styles.imageContainerr}>
+        <Image
+          source={{uri: imageUri}} style = {styles.image}
+        />
+      </View>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
-    gameContainer: {
-        padding: 16,
-        backgroundColor: '#fff',
-        margin: 16,
-        borderRadius: 8,
-    },
-    name: {
-        fontSize: 25,
-        fontWeight: 'bold'
-    },
-    price: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        color: 'gray',
-    },
-    releaseDate: {
-        fontSize: 32,
-        fontWeight: 'bold',
-        color: 'red',
-    },
-    platform: {
-        fontSize: 32,
-        fontWeight: 'bold',
-    },
-    genre: {
-        fontSize: 32,
-        fontWeight: 'bold',
-    },
-    button: {
-        backgroundColor: '#0FA5E9',
-        padding: 10,
-        marginVertical: 6,
-        borderRadius: 8,
-        alignItems: 'center'
-   },
-    buttonText: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        color: '#fff',
-    },
+  gameContainer: {
+    padding: 16,
+    height: 320,
+    backgroundColor: "#fff",
+    margin: 16,
+    borderRadius: 8,
+  },
+  name: {
+    fontSize: 25,
+    fontWeight: "bold",
+  },
+  price: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "gray",
+  },
+  releaseDate: {
+    fontSize: 32,
+    fontWeight: "bold",
+    color: "red",
+  },
+  platform: {
+    fontSize: 32,
+    fontWeight: "bold",
+  },
+  genre: {
+    fontSize: 32,
+    fontWeight: "bold",
+  },
+  button: {
+    backgroundColor: "#0FA5E9",
+    padding: 10,
+    marginVertical: 6,
+    borderRadius: 8,
+    alignItems: "center",
+  },
+  buttonText: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#fff",
+  },
+  imageContainerr: {
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    width: "50%",
+    height: "50%",
+    borderColor: "black",
+  },
+  image:{
+    width:'30%',
+    height:'30%',
+    borderRadius:2
+  }
 });
