@@ -16,7 +16,7 @@ const PracticeProvider = ({children})=> {
         genre: "",
         createAt: new Date(),
         releaseDate: "",
-        image: "",
+        imageUri: "",
       });
     
 
