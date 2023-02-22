@@ -1,7 +1,13 @@
 import { useNavigation } from "@react-navigation/native";
 import { useContext, useState } from "react";
+import {firebase} from '../../config/firebase'
 import React from "react";
-import { Pressable, Text, View, StyleSheet, Button, TouchableOpacity, SafeAreaView, Alert } from "react-native";
+import {
+  Text,
+  View,
+  StyleSheet,
+  Button,TouchableOpacity
+} from "react-native";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
 import MyDatePicker from "../components/DatePicker";
 import { database } from "../../config/firebase";
@@ -10,32 +16,67 @@ import CurryImagePicker from "../components/CurryImagePicker";
 import { PracticeContext } from "../../context/PracticeContext";
 
 export default function Add() {
+  const { selectedImage,setImageSelected, text, newItem, setNewItem, setDate } = useContext(PracticeContext);
 
-  const {text, newItem, setNewItem} = useContext(PracticeContext);
-  
   const navigation = useNavigation();
 
   //con esta funcion agrego un nuevo documento a la bd
   const onSend = async () => {
+    uploadImage();
     await addDoc(collection(database, "games"), newItem);
+    setDate('empty');
     navigation.goBack();
+    
   };
 
 
+  const uploadImage = async()=> {
+    const response = await fetch(selectedImage);
+    const blob = await response.blob();
+    const fileName = selectedImage.substring(selectedImage.lastIndexOf('/')+1);
+    let storageRef = firebase.storage().ref(`games/images/${fileName}`);
 
+    storageRef.put(blob)
+    .on(
+      firebase.storage.TaskEvent.STATE_CHANGED,
+      snapshot=>{
+        console.log("snapshot: "+snapshot.state);
+        console.log("progress: "+(snapshot.bytesTransferred/snapshot.totalBytes)*100);
+     if (snapshot.state === firebase.storage.TaskState.SUCCESS){
+       console.log("Success");
+     }
+      },
+      error => {
+        unsuscribe();
+        console.log('failed loading image'+ error.toString());
+      },
+      ()=>{
+        storageRef.getDownloadURL()
+        .then((downloadUrl) => {
+        
+          setNewItem({ ...newItem, imageUri: downloadUrl})
 
-  React.useLayoutEffect(()=>{
+        })
+      }
+    );
+  }
+    
+
+  React.useLayoutEffect(() => {
     navigation.setOptions({
-      headerRight:()=> <Button title = 'Home' onPress={()=> navigation.navigate('Home')}/>
-    })
-  },[])
-
- 
+      headerRight: () => (
+        <Button title="Home" onPress={() => navigation.navigate("Home")} />
+      ),
+    });
+  }, []);
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={{alignItems:'center'}}>
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={{ alignItems: "center" }}
+    >
       <Text style={styles.title}>Add a New Game</Text>
-      <CurryImagePicker/>
+      <CurryImagePicker />
       <TextInput
         style={styles.inputContainer}
         placeholder="Product Name"
@@ -57,13 +98,12 @@ export default function Add() {
         placeholder="Genre"
         onChangeText={(text) => setNewItem({ ...newItem, genre: text })}
       />
-       <Text style = {{fontWeight:'bold', fontSize: 20}}>{text}</Text>
-      <MyDatePicker/>
+      <Text style={{ fontWeight: "bold", fontSize: 20 }}>{text}</Text>
+      <MyDatePicker />
       <View style={styles.buttonContainer}>
-        
-        <Pressable style={styles.button} onPress={onSend}>
+        <TouchableOpacity style={styles.button} onPress={onSend}>
           <Text style={styles.text}>Subir</Text>
-        </Pressable>
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );
@@ -73,7 +113,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 0.95,
     backgroundColor: "#fff",
-    
   },
   title: {
     fontSize: 32,
