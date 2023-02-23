@@ -6,7 +6,7 @@ import {
   Text,
   View,
   StyleSheet,
-  Button,TouchableOpacity
+  Button, TouchableOpacity
 } from "react-native";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
 import MyDatePicker from "../components/DatePicker";
