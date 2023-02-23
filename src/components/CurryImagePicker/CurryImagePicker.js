@@ -2,8 +2,9 @@ import { View, Text, Image, Button, StyleSheet} from 'react-native'
 import { useState, useEffect, useContext } from 'react';
 import React from 'react'
 import * as ImagePicker from "expo-image-picker";
-import { PracticeContext } from '../../context/PracticeContext';
-import ImageViewer from './ImageViewer';
+import { PracticeContext } from '../../../context/PracticeContext';
+import ImageViewer from '../ImageViewer/ImageViewer';
+import { styles } from './style';
 
 const CurryImagePicker = () => {
 
@@ -40,22 +41,3 @@ const CurryImagePicker = () => {
 }
 
 export default CurryImagePicker;
-
-const styles = StyleSheet.create({
-    container:{
-        width: '100%',
-        alignItems: 'center',
-        
-    },
-    imageContainer:{
-        borderWidth:1,
-        borderColor: 'black',
-        width:'80%',
-        height: 180,
-        backgroundColor:'#eee',
-    },
-    button:{
-        margin:8
-    }
-   
-})

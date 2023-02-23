@@ -2,7 +2,8 @@ import { View, Text, Button, StyleSheet, Platform } from "react-native";
 import React, { useContext } from "react";
 import { useState } from "react";
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { PracticeContext } from "../../context/PracticeContext";
+import { PracticeContext } from "../../../context/PracticeContext";
+import { styles } from "./style";
 
 const MyDatePicker = () => {
   
@@ -49,12 +50,3 @@ const MyDatePicker = () => {
 };
 
 export default MyDatePicker;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

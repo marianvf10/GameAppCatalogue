@@ -9,10 +9,10 @@ import {
   Button, TouchableOpacity
 } from "react-native";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
-import MyDatePicker from "../components/DatePicker";
+import MyDatePicker from "../components/DatePicker/DatePicker";
 import { database } from "../../config/firebase";
 import { collection, addDoc } from "firebase/firestore";
-import CurryImagePicker from "../components/CurryImagePicker";
+import CurryImagePicker from "../components/CurryImagePicker/CurryImagePicker";
 import { PracticeContext } from "../../context/PracticeContext";
 
 export default function Add() {
