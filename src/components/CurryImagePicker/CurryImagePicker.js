@@ -6,9 +6,9 @@ import { PracticeContext } from '../../../context/PracticeContext';
 import ImageViewer from '../ImageViewer/ImageViewer';
 import { styles } from './style';
 
-const CurryImagePicker = () => {
+const CurryImagePicker = ( {addImage} ) => {
 
-    const {selectedImage, setSelectedImage} = useContext(PracticeContext);
+    const [selectedImage, setSelectedImage] = useState(null);
     
     const PlaceholderImage = ''; //ruta de prueba para probar ImagePicker
 
@@ -19,9 +19,8 @@ const CurryImagePicker = () => {
         aspect: [4, 3],
         quality: 1,
       });
-    
         setSelectedImage(result.assets[0].uri);
-      
+        addImage(selectedImage);
       
     };
   

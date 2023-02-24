@@ -16,12 +16,13 @@ import CurryImagePicker from "../components/CurryImagePicker/CurryImagePicker";
 import { PracticeContext } from "../../context/PracticeContext";
 
 export default function Add() {
-  const { selectedImage,setImageSelected, text, newItem, setNewItem} = useContext(PracticeContext);
+  const {text, newItem, setNewItem} = useContext(PracticeContext);
 
 
   const navigation = useNavigation();
 
   const [addD, setNewDate] = useState('');
+  const [selectedImage, setNewImage] = useState(null);
 
   //con esta funcion agrego un nuevo documento a la bd
   const onSend = async () => {
@@ -35,6 +36,10 @@ export default function Add() {
   const addDate = (newDate) => {
     setNewDate(newDate.toString());
     setNewItem({ ...newItem, releaseDate: newDate });
+  }
+
+  const addImage = (newImage) => {
+    setNewImage(newImage);
   }
 
 
@@ -84,7 +89,7 @@ export default function Add() {
       contentContainerStyle={{ alignItems: "center" }}
     >
       <Text style={styles.title}>Add a New Game</Text>
-      <CurryImagePicker />
+      <CurryImagePicker addImage = {addImage}/>
       <TextInput
         style={styles.inputContainer}
         placeholder="Product Name"
