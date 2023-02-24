@@ -16,18 +16,26 @@ import CurryImagePicker from "../components/CurryImagePicker/CurryImagePicker";
 import { PracticeContext } from "../../context/PracticeContext";
 
 export default function Add() {
-  const { selectedImage,setImageSelected, text, newItem, setNewItem, setDate } = useContext(PracticeContext);
+  const { selectedImage,setImageSelected, text, newItem, setNewItem} = useContext(PracticeContext);
+
 
   const navigation = useNavigation();
+
+  const [addD, setNewDate] = useState('');
 
   //con esta funcion agrego un nuevo documento a la bd
   const onSend = async () => {
     uploadImage();
     await addDoc(collection(database, "games"), newItem);
-    setDate('empty');
+    setNewDate(new Date());
     navigation.goBack();
     
   };
+
+  const addDate = (newDate) => {
+    setNewDate(newDate.toString());
+    setNewItem({ ...newItem, releaseDate: newDate });
+  }
 
 
   const uploadImage = async()=> {
@@ -99,7 +107,7 @@ export default function Add() {
         onChangeText={(text) => setNewItem({ ...newItem, genre: text })}
       />
       <Text style={{ fontWeight: "bold", fontSize: 20 }}>{text}</Text>
-      <MyDatePicker />
+      <MyDatePicker addDate={addDate}/>
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.button} onPress={onSend}>
           <Text style={styles.text}>Subir</Text>
