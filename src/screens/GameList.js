@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import { database } from '../../config/firebase';
 import { collection, onSnapshot, orderBy, query, QuerySnapshot } from 'firebase/firestore';
-import Game from '../components/Games';
+import Game from '../components/Game/Games';
 import { ScrollView } from 'react-native-gesture-handler';
 
 export default function GameList() {
