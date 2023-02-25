@@ -1,10 +1,11 @@
 import { View, Text, Button } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useEffect, useLayoutEffect } from 'react'
 import { useNavigation } from '@react-navigation/native'
-import { database } from '../../config/firebase';
+import { database } from '../../../config/firebase';
 import { collection, onSnapshot, orderBy, query, QuerySnapshot } from 'firebase/firestore';
-import Game from '../components/Game/Games';
+import Game from '../../components/Game/Games';
 import { ScrollView } from 'react-native-gesture-handler';
+import { styles } from './style';
 
 export default function GameList() {
 
@@ -12,13 +13,13 @@ export default function GameList() {
   
     const [games, setGames] = useState([]); //inicializo como arreglo vacio
 
-    React.useLayoutEffect(()=>{
+    useLayoutEffect(()=>{
       navigation.setOptions({
         headerRight:()=> <Button title = 'Add' onPress={()=> navigation.navigate('Add')}/>
       })
     },[])
   
-    React.useEffect(() => {
+    useEffect(() => {
       const collectionRef = collection(database,'games');
       const q = query(collectionRef,orderBy('price','desc')) //de esta manera hacemos el fetch a nuestra bd
   
