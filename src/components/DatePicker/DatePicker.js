@@ -1,16 +1,14 @@
 import { View, Text, Button, StyleSheet, Platform } from "react-native";
-import React, { useContext } from "react";
+import React from "react";
 import { useState } from "react";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { styles } from "./style";
 
 const MyDatePicker = ({ addDate }) => {
-  
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState("date");
   const [show, setShow] = useState(false);
-  const [text, setText] = useState('Release date undefined');
-
+  const [text, setText] = useState("Release date undefined");
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -26,7 +24,6 @@ const MyDatePicker = ({ addDate }) => {
       tempDate.getFullYear();
 
     setText(fDate);
-    //setNewItem({...newItem, releaseDate: fDate })
     addDate(fDate);
   };
   const showMode = (currentMode) => {
@@ -35,7 +32,7 @@ const MyDatePicker = ({ addDate }) => {
   };
   return (
     <View style={styles.container}>
-       <Text style = {styles.text}>{text}</Text>
+      <Text style={styles.text}>{text}</Text>
       <View style={{ margin: 20 }}>
         <Button
           title="Ingresar fecha estreno"
@@ -43,7 +40,6 @@ const MyDatePicker = ({ addDate }) => {
             showMode("date");
           }}
         />
-        
       </View>
 
       {show && (
@@ -56,7 +52,6 @@ const MyDatePicker = ({ addDate }) => {
           onChange={onChange}
         />
       )}
-     
     </View>
   );
 };
