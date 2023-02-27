@@ -3,7 +3,6 @@ import React from "react";
 import { database } from "../../../config/firebase";
 import { deleteDoc, doc, updateDoc } from "firebase/firestore";
 import { AntDesign } from "@expo/vector-icons";
-import ImageViewer from "../ImageViewer/ImageViewer";
 import { styles } from "./style";
 
 export default function Game({
@@ -14,13 +13,19 @@ export default function Game({
   releaseDate,
   imageUri,
 }) {
+  const source = {uri:imageUri }
+  console.log(source);
+  
   return (
     <View style={styles.gameContainer}>
       <Text style={styles.name}>{name}</Text>
-      <Text>{imageUri}</Text>
+      <Text>{platform}</Text>
+      <Text>{price}</Text>
+      <Text>{genre}</Text>
+      <Text>{releaseDate}</Text>
       <View style={styles.imageContainerr}>
         <Image
-          source={{uri: imageUri}} style = {styles.image}
+          source={{imageUri}} style = {styles.image}
         />
       </View>
     </View>
