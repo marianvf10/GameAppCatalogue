@@ -24,6 +24,7 @@ const MyDatePicker = ({ addDate }) => {
       tempDate.getFullYear();
 
     setText(fDate);
+
     addDate(fDate);
   };
   const showMode = (currentMode) => {

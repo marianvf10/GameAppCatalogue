@@ -25,7 +25,7 @@ export default function Game({
       <Text>{releaseDate}</Text>
       <View style={styles.imageContainerr}>
         <Image
-          source={{imageUri}} style = {styles.image}
+          source={source} style = {styles.image}
         />
       </View>
     </View>
