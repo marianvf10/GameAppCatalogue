@@ -14,7 +14,6 @@ export default function Game({
   imageUri,
 }) {
   const source = {uri:imageUri }
-  console.log(source);
   
   return (
     <View style={styles.gameContainer}>
