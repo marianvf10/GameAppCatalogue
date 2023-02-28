@@ -44,7 +44,7 @@ export default function GameList() {
     return (
       <ScrollView>
   
-        <Text>Games</Text>
+        
         {games.map(game => <Game key={game.id} {...game}/>)}
       
       </ScrollView>
