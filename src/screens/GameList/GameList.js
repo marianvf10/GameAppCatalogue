@@ -1,31 +1,24 @@
-import {
-  View,
-  Text,
-  Button,
-  FlatList,
-  Image,
-  TouchableOpacity,
-} from "react-native";
+import { View, Text, Button, FlatList, Image } from "react-native";
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { database } from "../../../config/firebase";
-import {
-  collection,
-  onSnapshot,
-  orderBy,
-  query,
-  QuerySnapshot,
-} from "firebase/firestore";
-import Game from "../../components/Game/Games";
+import { onSnapshot } from "firebase/firestore";
 import { styles } from "./style";
+import { getReferenceToBD } from "../../services/games";
 
 export default function GameList() {
   const goDetails = (name, imageUri, price, platform, releaseDate, genre) => {
-    navigation.navigate("GameDetails",{name, imageUri, price, platform, releaseDate, genre});
-  }
+    navigation.navigate("GameDetails", {
+      name,
+      imageUri,
+      price,
+      platform,
+      releaseDate,
+      genre,
+    });
+  };
   const navigation = useNavigation();
 
-  const [games, setGames] = useState([]); //inicializo como arreglo vacio
+  const [games, setGames] = useState([]); 
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -36,9 +29,10 @@ export default function GameList() {
   }, []);
 
   useEffect(() => {
-    const collectionRef = collection(database, "games");
-    const q = query(collectionRef, orderBy("price", "desc")); //de esta manera hacemos el fetch a nuestra bd
 
+    const q = getReferenceToBD();
+    /* a partir de la query realizada, creamos un listener para que cada vez que se cree un nuevo 
+    juego en la bd, se actualize automaticamente la lista de juegos*/
     const unsuscribe = onSnapshot(q, (querySnapshot) => {
       setGames(
         querySnapshot.docs.map((doc) => ({
@@ -56,7 +50,14 @@ export default function GameList() {
     return unsuscribe;
   }, []);
 
-  const renderList = ({ name, imageUri, price, platform, releaseDate, genre }) => {
+  const renderList = ({
+    name,
+    imageUri,
+    price,
+    platform,
+    releaseDate,
+    genre,
+  }) => {
     let prc = "$ " + price;
     return (
       <View style={styles.list}>
@@ -68,8 +69,11 @@ export default function GameList() {
             <Text style={styles.name}>{prc}</Text>
             <Text style={styles.name}>{platform}</Text>
             <Button
-            onPress={()=> goDetails(name,imageUri,price,platform,releaseDate,genre)}
-            title = "Details"/>
+              onPress={() =>
+                goDetails(name, imageUri, price, platform, releaseDate, genre)
+              }
+              title="Details"
+            />
           </View>
           <View></View>
         </View>
@@ -77,7 +81,6 @@ export default function GameList() {
     );
   };
 
-  
   return (
     <View style={{ flex: 1 }}>
       <Text style={styles.title}>Popular Games</Text>

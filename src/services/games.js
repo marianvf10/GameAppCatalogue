@@ -1,7 +1,14 @@
-import React from "react";
 import { firebase} from "../../config/firebase";
 import { database } from "../../config/firebase";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, onSnapshot, orderBy, query } from "firebase/firestore";
+
+
+const getReferenceToBD = () => {
+  //creamos una referencia a la bd y realizamos una consulta para poder tener un listado inicial de los juegos 
+  const collectionRef = collection(database, "games");
+  const q = query(collectionRef, orderBy("price", "desc"));
+  return q;
+}
 
 //con esta funcion agrego un nuevo documento a la bd
 const uploadGame = async (obj,newItem,selectedImage) => {
@@ -44,4 +51,4 @@ const uploadImage = async (selectedImage) => {
     }
   };
 
-  export {uploadGame};
+  export {uploadGame,getReferenceToBD};
