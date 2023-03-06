@@ -21,7 +21,6 @@ export function ActionButton(props){
     const [action,name,w,h]=[props.action,props.name,props.width==null? 140:props.width, props.height==null? 35:props.height];
     //eq system 3 vars,h heigth,w width a amountOfWordss
     const fontS = -0.1573*h + 0.1199*w+2.3602* name.split(' ').length;
-    console.log(fontS)
 
     return(
             <TouchableOpacity style = {[styles.button,{height:h,width:w}]} onPress={action}>

@@ -5,7 +5,7 @@ export const styles = StyleSheet.create({
     {
       backgroundColor: '#181818',
       height: '100%',
-      justifyContent: 'center',
+      justifyContent: 'center'
     },
     text:
     {

@@ -72,14 +72,10 @@ export default function Add() {
     );
 
     const response = await fetch(selectedImage);
-    console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
-
     const blob = await response.blob();
-    console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
 
     const storg = firebase.app().storage('gs://crud-tutorial-92369.appspot.com');
     const storageRef = storg.ref(`games/images/${fileName}`);
-    console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
 
     try {
       //subo la imagen
@@ -94,14 +90,6 @@ export default function Add() {
       console.log(error);
     }
   };
-
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <NavButton name="Home" nav = "Home"/>
-      ),
-    });
-  }, []);
 
   //Cambiar placeholder a negritas
   return (

@@ -17,7 +17,7 @@ import {
 } from "firebase/firestore";
 import Game from "../../components/Game/Games";
 import { styles } from "./style";
-import { NavButton, ActionButton } from "../../components/Button/Button";
+import { ActionButton } from "../../components/Button/Button";
 import { Ionicons } from '@expo/vector-icons';
 
 
@@ -54,7 +54,7 @@ export default function GameList() {
   const renderList = ({ name, imageUri, price, platform, releaseDate, genre }) => {
     let prc = "$ " + price;
 
-    setEmptyStore(false);
+   setEmptyStore(false);
 
     return (
       <View style={styles.list}>
