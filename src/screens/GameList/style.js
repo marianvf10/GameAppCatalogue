@@ -42,7 +42,7 @@ export const styles = StyleSheet.create({
         height: 200,
         alignSelf:'center',
         margin:10,
-        borderRadius:4
+        borderRadius:4,
     },
     listingRatingContainer:{
         flexDirection: 'row',
