@@ -1,8 +1,9 @@
-import { View, Text, Button, StyleSheet, Platform } from "react-native";
+import { View, Text, StyleSheet, Platform } from "react-native";
 import React from "react";
 import { useState } from "react";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { styles } from "./style";
+import {ActionButton} from '../Button/Button'
 
 const MyDatePicker = ({ addDate }) => {
   const [date, setDate] = useState(new Date());
@@ -34,10 +35,11 @@ const MyDatePicker = ({ addDate }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>{text}</Text>
-      <View style={{ margin: 20 }}>
-        <Button
-          title="Ingresar fecha estreno"
-          onPress={() => {
+      <View style={{ margin: 10}}>
+        <ActionButton
+          height={50}
+          name="Upload release date"
+          action={() => {
             showMode("date");
           }}
         />
