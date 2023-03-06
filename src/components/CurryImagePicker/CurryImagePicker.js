@@ -1,12 +1,15 @@
-import { View, Button } from "react-native";
+import { View } from "react-native";
 import { useState } from "react";
 import React from "react";
 import * as ImagePicker from "expo-image-picker";
 import ImageViewer from "../ImageViewer/ImageViewer";
 import { styles } from "./style";
+import { FontAwesome } from '@expo/vector-icons';
+import { ActionButton } from "../Button/Button";
 
 const CurryImagePicker = ({ addImage }) => {
   const [selectedImage, setSelectedImage] = useState(null);
+  const [elementVisible, setElementVisible] = useState(true);
 
   const PlaceholderImage = ""; //ruta de prueba para probar ImagePicker
 
@@ -21,21 +24,22 @@ const CurryImagePicker = ({ addImage }) => {
       const source = result.assets[0].uri;
       setSelectedImage(source);
       addImage(source);
+    };
 
-    }
-    
+    setElementVisible(false);
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
+      {elementVisible?<FontAwesome name="camera" size={24} color="#D27D2D" style={styles.icon}/>:null}
         <ImageViewer
           placeholderImageSource={PlaceholderImage}
           selectedImage={selectedImage}
         />
       </View>
       <View style={styles.button}>
-        <Button title="Elegir Imagen" onPress={pickImageAsync} />
+        <ActionButton name="Upload image" action={pickImageAsync}/>
       </View>
     </View>
   );

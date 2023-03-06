@@ -2,13 +2,14 @@ import { useNavigation } from "@react-navigation/native";
 import { useState, useLayoutEffect } from "react";
 import { firebase } from "../../../config/firebase";
 import React from "react";
-import { Text, View, Button, TouchableOpacity } from "react-native";
+import { Text, View, TouchableOpacity } from "react-native";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
 import MyDatePicker from "../../components/DatePicker/DatePicker";
 import { database } from "../../../config/firebase";
 import { collection, addDoc } from "firebase/firestore";
 import CurryImagePicker from "../../components/CurryImagePicker/CurryImagePicker";
-import { styles } from "./style";
+import {styles} from "./style";
+import { ActionButton,NavButton } from "../../components/Button/Button";
 
 export default function Add() {
   const navigation = useNavigation();
@@ -71,18 +72,24 @@ export default function Add() {
     );
 
     const response = await fetch(selectedImage);
+    console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+
     const blob = await response.blob();
-    var ref = firebase.storage().ref(`games/images/${fileName}`);
+    console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+
+    const storg = firebase.app().storage('gs://crud-tutorial-92369.appspot.com');
+    const storageRef = storg.ref(`games/images/${fileName}`);
+    console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA');
 
     try {
       //subo la imagen
-      await ref.put(blob);
+      await storageRef.put(blob);
     } catch (error) {
       console.log(error);
     }
     try {
       //descargo la imagen y retorno el link de descarga
-      return await ref.getDownloadURL();
+      return await storageRef.getDownloadURL();
     } catch (error) {
       console.log(error);
     }
@@ -91,13 +98,15 @@ export default function Add() {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-        <Button title="Home" onPress={() => navigation.navigate("Home")} />
+        <NavButton name="Home" nav = "Home"/>
       ),
     });
   }, []);
 
+  //Cambiar placeholder a negritas
   return (
-    <ScrollView
+      
+      <ScrollView
       style={styles.container}
       contentContainerStyle={{ alignItems: "center" }}
     >
@@ -105,31 +114,32 @@ export default function Add() {
       <CurryImagePicker addImage={addImage} />
       <TextInput
         style={styles.inputContainer}
+        placeholderTextColor="white"
         placeholder="Product Name"
         onChangeText={(text) => setNewItem({ ...newItem, name: text })}
       />
       <TextInput
         style={styles.inputContainer}
+        placeholderTextColor="white"
         placeholder="Platform"
         onChangeText={(text) => setNewItem({ ...newItem, platform: text })}
       />
       <TextInput
         style={styles.inputContainer}
+        placeholderTextColor="white"
         placeholder="Price"
         keyboardType="numeric"
         onChangeText={(text) => setNewItem({ ...newItem, price: text })}
       />
       <TextInput
         style={styles.inputContainer}
+        placeholderTextColor="white"
         placeholder="Genre"
         onChangeText={(text) => setNewItem({ ...newItem, genre: text })}
       />
       <MyDatePicker addDate={addDate} />
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button} onPress={onSend}>
-          <Text style={styles.text}>Subir</Text>
-        </TouchableOpacity>
-      </View>
+        <ActionButton name="Upload game" action={onSend}/>
     </ScrollView>
+    
   );
 }
