@@ -2,8 +2,7 @@ import {
   View,
   Text,
   FlatList,
-  Image,
-  TouchableOpacity,
+  Image
 } from "react-native";
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
@@ -11,6 +10,7 @@ import { onSnapshot } from "firebase/firestore";
 import { styles } from "./style";
 import { ActionButton } from "../../components/Button/Button";
 import { Ionicons } from '@expo/vector-icons';
+import { getReferenceToBD } from "../../services/games";
 
 
 export default function GameList() {
@@ -40,7 +40,11 @@ export default function GameList() {
           imageUri: doc.data().imageUri,
         }))
       );
-    });
+      if (setGames.length > 0) {
+        setEmptyStore(false);
+      }
+    }
+    );
     return unsuscribe;
   }, []);
 
@@ -52,10 +56,6 @@ export default function GameList() {
     releaseDate,
     genre,
   }) => {
-    let prc = "$ " + price;
-
-   setEmptyStore(false);
-
     return (
       <View style={styles.list}>
         <Image source={{ uri: imageUri }} style={styles.listImage} />
@@ -63,7 +63,7 @@ export default function GameList() {
         <View style={styles.listingRatingContainer}>
           <View style={{ flex: 1 }}>
             <Text style={styles.name}>{name}</Text>
-            <Text style={styles.name}>{prc}</Text>
+            <Text style={styles.name}>{"$ "+price}</Text>
             <Text style={styles.name}>{platform}</Text>
             <ActionButton
               action={() => goDetails(name, imageUri, price, platform, releaseDate, genre)}
