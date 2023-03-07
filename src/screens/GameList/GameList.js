@@ -2,23 +2,15 @@ import {
   View,
   Text,
   FlatList,
-  Image,
-  TouchableOpacity,
+  Image
 } from "react-native";
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { database } from "../../../config/firebase";
-import {
-  collection,
-  onSnapshot,
-  orderBy,
-  query,
-  QuerySnapshot,
-} from "firebase/firestore";
-import Game from "../../components/Game/Games";
+import { onSnapshot } from "firebase/firestore";
 import { styles } from "./style";
 import { ActionButton } from "../../components/Button/Button";
 import { Ionicons } from '@expo/vector-icons';
+import { getReferenceToBD } from "../../services/games";
 
 
 export default function GameList() {
@@ -31,9 +23,10 @@ export default function GameList() {
   const [emptyStore, setEmptyStore] = useState(true); //Marca si ya hay juegos registrados en la tienda
 
   useEffect(() => {
-    const collectionRef = collection(database, "games");
-    const q = query(collectionRef, orderBy("price", "desc")); //de esta manera hacemos el fetch a nuestra bd
 
+    const q = getReferenceToBD();
+    /* a partir de la query realizada, creamos un listener para que cada vez que se cree un nuevo 
+    juego en la bd, se actualize automaticamente la lista de juegos*/
     const unsuscribe = onSnapshot(q, (querySnapshot) => {
       setGames(
         querySnapshot.docs.map((doc) => ({
@@ -47,15 +40,22 @@ export default function GameList() {
           imageUri: doc.data().imageUri,
         }))
       );
-    });
+      if (setGames.length > 0) {
+        setEmptyStore(false);
+      }
+    }
+    );
     return unsuscribe;
   }, []);
 
-  const renderList = ({ name, imageUri, price, platform, releaseDate, genre }) => {
-    let prc = "$ " + price;
-
-   setEmptyStore(false);
-
+  const renderList = ({
+    name,
+    imageUri,
+    price,
+    platform,
+    releaseDate,
+    genre,
+  }) => {
     return (
       <View style={styles.list}>
         <Image source={{ uri: imageUri }} style={styles.listImage} />
@@ -63,7 +63,7 @@ export default function GameList() {
         <View style={styles.listingRatingContainer}>
           <View style={{ flex: 1 }}>
             <Text style={styles.name}>{name}</Text>
-            <Text style={styles.name}>{prc}</Text>
+            <Text style={styles.name}>{"$ "+price}</Text>
             <Text style={styles.name}>{platform}</Text>
             <ActionButton
               action={() => goDetails(name, imageUri, price, platform, releaseDate, genre)}

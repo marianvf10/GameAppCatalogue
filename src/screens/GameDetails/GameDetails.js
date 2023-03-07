@@ -8,7 +8,6 @@ const GameDetails = ({ route }) => {
   const { platform } = route.params;
   const { releaseDate } = route.params;
   const { genre } = route.params;
-  console.log(imageUri);
   return (
     <View style={styles.background}>
       <View style={styles.listImageBox}>

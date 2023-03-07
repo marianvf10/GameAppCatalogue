@@ -1,15 +1,13 @@
-import { useNavigation } from "@react-navigation/native";
-import { useState, useLayoutEffect } from "react";
-import { firebase } from "../../../config/firebase";
 import React from "react";
-import { Text, View, TouchableOpacity } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { useState} from "react";
+import { Text} from "react-native";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
 import MyDatePicker from "../../components/DatePicker/DatePicker";
-import { database } from "../../../config/firebase";
-import { collection, addDoc } from "firebase/firestore";
 import CurryImagePicker from "../../components/CurryImagePicker/CurryImagePicker";
-import {styles} from "./style";
-import { ActionButton,NavButton } from "../../components/Button/Button";
+import { ActionButton } from "../../components/Button/Button";
+import { styles } from "./style";
+import { uploadGame } from "../../services/games";
 
 export default function Add() {
   const navigation = useNavigation();
@@ -39,56 +37,19 @@ export default function Add() {
 
   //con esta funcion agrego un nuevo documento a la bd
   const onSend = async () => {
-    const url = await uploadImage();
-    addAttribute(url);
-    await addDoc(collection(database, "games"), obj);
+    uploadGame(obj,newItem,selectedImage);
     navigation.goBack();
   };
 
-  const addAttribute = (downloadUrl) => {
-    obj.name = newItem.name;
-    obj.platform = newItem.platform;
-    obj.price = newItem.price;
-    obj.genre = newItem.genre;
-    obj.releaseDate = newItem.releaseDate;
-    obj.imageUri = downloadUrl;
-  };
-
-  //con esta funcion recibo informacion del DatePicker
+  //con esta funcion recibo informacion del componente DatePicker
   const addDate = (newDate) => {
     setNewDate(newDate.toString());
     setNewItem({ ...newItem, releaseDate: newDate });
   };
 
-  //con esta funcion recibo informacion del CurryImagePicker
+  //con esta funcion recibo informacion del componente CurryImagePicker
   const addImage = (newImage) => {
     setNewImage(newImage);
-  };
-
-  //funcion para subir la imagen a Firebase storage y obtener una URL de descarga
-  const uploadImage = async () => {
-    const fileName = selectedImage.substring(
-      selectedImage.lastIndexOf("/") + 1
-    );
-
-    const response = await fetch(selectedImage);
-    const blob = await response.blob();
-
-    const storg = firebase.app().storage('gs://crud-tutorial-92369.appspot.com');
-    const storageRef = storg.ref(`games/images/${fileName}`);
-
-    try {
-      //subo la imagen
-      await storageRef.put(blob);
-    } catch (error) {
-      console.log(error);
-    }
-    try {
-      //descargo la imagen y retorno el link de descarga
-      return await storageRef.getDownloadURL();
-    } catch (error) {
-      console.log(error);
-    }
   };
 
   //Cambiar placeholder a negritas
