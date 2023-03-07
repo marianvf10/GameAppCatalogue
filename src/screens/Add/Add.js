@@ -1,14 +1,11 @@
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
-import { useState, useLayoutEffect } from "react";
-import { firebase } from "../../../config/firebase";
-import React from "react";
-import { Text, View, TouchableOpacity } from "react-native";
+import { useState} from "react";
+import { Text} from "react-native";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
 import MyDatePicker from "../../components/DatePicker/DatePicker";
 import CurryImagePicker from "../../components/CurryImagePicker/CurryImagePicker";
-import {styles} from "./style";
-import { ActionButton,NavButton } from "../../components/Button/Button";
+import { ActionButton } from "../../components/Button/Button";
 import { styles } from "./style";
 import { uploadGame } from "../../services/games";
 
