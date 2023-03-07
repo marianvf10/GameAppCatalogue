@@ -1,10 +1,14 @@
 import React from "react";
 import { useNavigation } from "@react-navigation/native";
 import { useState, useLayoutEffect } from "react";
-import { Text, View, Button, TouchableOpacity } from "react-native";
+import { firebase } from "../../../config/firebase";
+import React from "react";
+import { Text, View, TouchableOpacity } from "react-native";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
 import MyDatePicker from "../../components/DatePicker/DatePicker";
 import CurryImagePicker from "../../components/CurryImagePicker/CurryImagePicker";
+import {styles} from "./style";
+import { ActionButton,NavButton } from "../../components/Button/Button";
 import { styles } from "./style";
 import { uploadGame } from "../../services/games";
 
@@ -51,16 +55,10 @@ export default function Add() {
     setNewImage(newImage);
   };
 
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <Button title="Home" onPress={() => navigation.navigate("Home")} />
-      ),
-    });
-  }, []);
-
+  //Cambiar placeholder a negritas
   return (
-    <ScrollView
+      
+      <ScrollView
       style={styles.container}
       contentContainerStyle={{ alignItems: "center" }}
     >
@@ -68,31 +66,32 @@ export default function Add() {
       <CurryImagePicker addImage={addImage} />
       <TextInput
         style={styles.inputContainer}
+        placeholderTextColor="white"
         placeholder="Product Name"
         onChangeText={(text) => setNewItem({ ...newItem, name: text })}
       />
       <TextInput
         style={styles.inputContainer}
+        placeholderTextColor="white"
         placeholder="Platform"
         onChangeText={(text) => setNewItem({ ...newItem, platform: text })}
       />
       <TextInput
         style={styles.inputContainer}
+        placeholderTextColor="white"
         placeholder="Price"
         keyboardType="numeric"
         onChangeText={(text) => setNewItem({ ...newItem, price: text })}
       />
       <TextInput
         style={styles.inputContainer}
+        placeholderTextColor="white"
         placeholder="Genre"
         onChangeText={(text) => setNewItem({ ...newItem, genre: text })}
       />
       <MyDatePicker addDate={addDate} />
-      <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button} onPress={onSend}>
-          <Text style={styles.text}>Subir</Text>
-        </TouchableOpacity>
-      </View>
+        <ActionButton name="Upload game" action={onSend}/>
     </ScrollView>
+    
   );
 }

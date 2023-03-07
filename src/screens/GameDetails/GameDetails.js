@@ -1,23 +1,28 @@
-import { View, Text } from 'react-native'
+import { View, Text, Image } from 'react-native'
 import React from 'react'
-
+import { styles } from "./style";
 const GameDetails = ({ route }) => {
-  const {name} = route.params;
-  const {price} = route.params;
-  const {imageUri} = route.params;
-  const {platform} = route.params;
-  const {releaseDate} = route.params;
-  const {genre} = route.params;
-
+  const { name } = route.params;
+  const { price } = route.params;
+  const { imageUri } = route.params;
+  const { platform } = route.params;
+  const { releaseDate } = route.params;
+  const { genre } = route.params;
+  console.log(imageUri);
   return (
-    <View>
-      <Text>GameDetails</Text>
-      <Text>name: {JSON.stringify(name)}</Text>
-      <Text>price: {JSON.stringify(price)}</Text>
-      <Text>platform: {JSON.stringify(platform)}</Text>
-      <Text>genre: {JSON.stringify(genre)}</Text>
-      <Text>releaseDate: {JSON.stringify(releaseDate)}</Text>
-  
+    <View style={styles.background}>
+      <View style={styles.listImageBox}>
+        <Image source={{ uri: imageUri }} style={styles.listImage} />
+      </View>
+      
+      <Text style={styles.title}>{name}</Text>
+      <View style={styles.infoRow}>
+        <Text style={styles.info}>Price: {price}$</Text>
+        <Text style={styles.info}>Platform: {platform}</Text>
+      </View>
+      <Text style={styles.info}>Genre: {genre}</Text>
+      <Text style={styles.info}>Release on {releaseDate}</Text>
+
     </View>
   )
 }

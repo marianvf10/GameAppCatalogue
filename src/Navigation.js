@@ -10,21 +10,21 @@ const Stack = createNativeStackNavigator();
 function MyStack() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Home" component={Home} />
+      <Stack.Screen name="Home" component={Home} options={{headerStyle:{backgroundColor:'#FF8C00'}}}/>
       <Stack.Screen
         name="Add"
         component={Add}
-        options={{ presentation: "modal" }}
+        options={{ presentation: "modal",headerStyle:{backgroundColor:'#FF8C00'}}}
       />
       <Stack.Screen
         name="GameList"
         component={GameList}
-        options={{ presentation: "modal" }}
+        options={{ presentation: "modal",headerStyle:{backgroundColor:'#FF8C00'}}}
       />
       <Stack.Screen
         name="GameDetails"
         component={GameDetails}
-        options={{ presentation: "modal" }}
+        options={{ presentation: "modal",headerStyle:{backgroundColor:'#FF8C00'}}}
       />
     </Stack.Navigator>
   );
@@ -33,7 +33,7 @@ function MyStack() {
 export default function Navigation() {
   return (
     <NavigationContainer>
-      <MyStack />
+      <MyStack/>
     </NavigationContainer>
   );
 }
