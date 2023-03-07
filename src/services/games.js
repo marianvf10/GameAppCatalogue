@@ -1,6 +1,6 @@
 import { firebase} from "../../config/firebase";
 import { database } from "../../config/firebase";
-import { collection, addDoc, onSnapshot, orderBy, query } from "firebase/firestore";
+import { collection, addDoc, orderBy, query } from "firebase/firestore";
 
 
 const getReferenceToBD = () => {
