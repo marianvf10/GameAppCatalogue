@@ -11,18 +11,7 @@ import { uploadGame } from "../../services/games";
 
 export default function Add() {
   const navigation = useNavigation();
-
-  //este objeto es el que se guarda en la bd
-  const obj = {
-    name: "",
-    platform: "",
-    price: 0,
-    genre: "",
-    createAt: new Date(),
-    releaseDate: "",
-    imageUri: "",
-  };
-
+ 
   //este es el estado del objeto que se tiene que guardar, estos atributos se reciben del usuario
   const [newItem, setNewItem] = useState({
     name: "",
@@ -37,7 +26,7 @@ export default function Add() {
 
   //con esta funcion agrego un nuevo documento a la bd
   const onSend = async () => {
-    uploadGame(obj,newItem,selectedImage);
+    await uploadGame(newItem,selectedImage);
     navigation.goBack();
   };
 
