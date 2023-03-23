@@ -1,54 +1,97 @@
-import { firebase} from "../../config/firebase";
+import { firebase } from "../../config/firebase";
 import { database } from "../../config/firebase";
-import { collection, addDoc, orderBy, query } from "firebase/firestore";
+import {
+  collection,
+  addDoc,
+  orderBy,
+  query,
+  getDocs,
+  startAfter,
+  limit,
+} from "firebase/firestore";
 
+const obj = {
+  name: "",
+  platform: "",
+  price: 0,
+  genre: "",
+  createAt: new Date(),
+  releaseDate: "",
+  imageUri: "",
+};
 
-const getReferenceToBD = () => {
-  //creamos una referencia a la bd y realizamos una consulta para poder tener un listado inicial de los juegos 
+//Get games
+const fetchGames = async (gamesPerLoad,orderFilter) => {
+  //TO-IMPROVE-> add a new parameter to order
+  const post = new Array();
   const collectionRef = collection(database, "games");
-  const q = query(collectionRef, orderBy("price", "desc"));
-  return q;
-}
+  const q = query(collectionRef, orderBy(orderFilter), limit(gamesPerLoad));
+  const querySnapshot = await getDocs(q);
 
-//con esta funcion agrego un nuevo documento a la bd
-const uploadGame = async (obj,newItem,selectedImage) => {
-    const url = await uploadImage(selectedImage);
-    addAttribute(obj,newItem,url);
-    await addDoc(collection(database, "games"), obj);
-  };
+  const lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
+  const games = querySnapshot.docs.map((doc) => ({
+    id: doc.id,
+    name: doc.data().name,
+    platform: doc.data().platform,
+    price: doc.data().price,
+    createAt: doc.data().createAt,
+    genre: doc.data().genre,
+    releaseDate: doc.data().releaseDate,
+    imageUri: doc.data().imageUri,
+  }));
+  return { posts: games, lastVisible };
+};
+//Get More Games
+const fetchMoreGames = async (orderedFilter,startAf,gamesPerLoad) => {
+  const posts = new Array();
+  const collectionRef = collection(database, "games");
+  const q = query(collectionRef,orderBy(orderedFilter),startAfter(startAf),limit(gamesPerLoad));
+  const querySnapshot = await getDocs(q);
 
-  const addAttribute = (obj,newItem,downloadUrl) => {
-    obj.name = newItem.name;
-    obj.platform = newItem.platform;
-    obj.price = newItem.price;
-    obj.genre = newItem.genre;
-    obj.releaseDate = newItem.releaseDate;
-    obj.imageUri = downloadUrl;
-  };
+  const lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
+  const games = querySnapshot.docs.map((doc) => ({
+    id: doc.id,
+    name: doc.data().name,
+    platform: doc.data().platform,
+    price: doc.data().price,
+    createAt: doc.data().createAt,
+    genre: doc.data().genre,
+    releaseDate: doc.data().releaseDate,
+    imageUri: doc.data().imageUri,
+  }));
+  return { posts: games, lastVisible };
+};
 
+//function to add game to db
+const uploadGame = async (newItem, selectedImage) => {
+  const url = await uploadImage(selectedImage);
+  addAttribute(newItem, url);
+  await addDoc(collection(database, "games"), obj);
+};
 
-//funcion para subir la imagen a Firebase storage y obtener una URL de descarga
+const addAttribute = (newItem, downloadUrl) => {
+  obj.name = newItem.name;
+  obj.platform = newItem.platform;
+  obj.price = newItem.price;
+  obj.genre = newItem.genre;
+  obj.releaseDate = newItem.releaseDate;
+  obj.imageUri = downloadUrl;
+};
+
+//fuction to upload image to Firebase storage and retrieve a download URL
 const uploadImage = async (selectedImage) => {
-    const fileName = selectedImage.substring(
-      selectedImage.lastIndexOf("/") + 1
-    );
+  const fileName = selectedImage.substring(selectedImage.lastIndexOf("/") + 1);
 
-    const response = await fetch(selectedImage);
-    const blob = await response.blob();
-    var ref = firebase.storage().ref(`games/images/${fileName}`);
+  const response = await fetch(selectedImage);
+  const blob = await response.blob();
+  var ref = firebase.storage().ref(`games/images/${fileName}`);
 
-    try {
-      //subo la imagen
-      await ref.put(blob);
-    } catch (error) {
-      console.log(error);
-    }
-    try {
-      //descargo la imagen y retorno el link de descarga
-      return await ref.getDownloadURL();
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  try {
+    //upload image
+    await ref.put(blob);
+    //get and return download url
+    return await ref.getDownloadURL();
+  } catch (error) {}
+};
 
-  export {uploadGame,getReferenceToBD};
+export { uploadGame, fetchGames, fetchMoreGames };
