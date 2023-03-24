@@ -79,6 +79,8 @@ export default function GameList() {
       <View style={styles.titleBox}>
         <Text style={styles.title}>Popular Games</Text>
       </View>
+      
+      {/*Condicional encargado de mostrar/ocultar aviso de inexistencia de juegos en la BD*/}
       {
         emptyStore?
           <View>

@@ -41,7 +41,6 @@ export default function Add() {
     setNewImage(newImage);
   };
 
-  //Cambiar placeholder a negritas
   return (
       
       <ScrollView

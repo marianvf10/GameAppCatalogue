@@ -1,5 +1,5 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { NavigationContainer, StackNavigator } from "@react-navigation/native";
+import { NavigationContainer} from "@react-navigation/native";
 import Home from "./screens/Home/Home";
 import Add from "./screens/Add/Add";
 import GameList from "./screens/GameList/GameList";
@@ -14,7 +14,7 @@ function MyStack() {
       <Stack.Screen
         name="Add"
         component={Add}
-        options={{ presentation: "modal",headerStyle:{backgroundColor:'#FF8C00'}}}
+        options={{presentation: "modal",headerStyle:{backgroundColor:'#FF8C00'}}}
       />
       <Stack.Screen
         name="GameList"

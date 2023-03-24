@@ -9,7 +9,7 @@ import { ActionButton } from "../Button/Button";
 
 const CurryImagePicker = ({ addImage }) => {
   const [selectedImage, setSelectedImage] = useState(null);
-  const [elementVisible, setElementVisible] = useState(true);
+  const [elementVisible, setElementVisible] = useState(true);//Indica si hay el icono de camara de fotos es visible.
 
   const PlaceholderImage = ""; //ruta de prueba para probar ImagePicker
 
@@ -32,6 +32,8 @@ const CurryImagePicker = ({ addImage }) => {
   return (
     <View style={styles.container}>
       <View style={styles.imageContainer}>
+      {/*Condicional que indica si debe o no aparecer el icono de camara de fotos, en funcion de si ya se cargo
+      una imagen */}
       {elementVisible?<FontAwesome name="camera" size={24} color="#D27D2D" style={styles.icon}/>:null}
         <ImageViewer
           placeholderImageSource={PlaceholderImage}

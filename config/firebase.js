@@ -8,7 +8,7 @@ import {getFirestore} from 'firebase/firestore'
 const firebaseConfig = {
   apiKey: API_KEY,
   authDomain: AUTH_DOMAIN ,
-  projectId: PROJECT_ID ,
+  projectId:"crud-tutorial-92369",
   storageBucket: STORAGE_BUCKET ,
   messagingSenderId: MESSAGING_SENDER_ID ,
   appId: APP_ID

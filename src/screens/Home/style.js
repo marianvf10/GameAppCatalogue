@@ -13,5 +13,11 @@ export const styles = StyleSheet.create({
       alignSelf: 'center',
       textAlign: 'center',
       fontStyle: 'italic'
-    }
+    },
+    title:
+        {
+            color:'white',
+            alignSelf:'center',
+            fontSize:50
+        }
 })
