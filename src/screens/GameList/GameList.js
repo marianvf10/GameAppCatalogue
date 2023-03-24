@@ -2,15 +2,15 @@ import {
   View,
   Text,
   FlatList,
-  Image
+  Image,
+  ActivityIndicator
 } from "react-native";
 import React, { useState, useEffect, useLayoutEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { onSnapshot } from "firebase/firestore";
 import { styles } from "./style";
 import { ActionButton } from "../../components/Button/Button";
 import { Ionicons } from '@expo/vector-icons';
-import { getReferenceToBD } from "../../services/games";
+import { fetchGames, fetchMoreGames} from "../../services/games";
 
 
 export default function GameList() {
@@ -19,34 +19,33 @@ export default function GameList() {
   }
   const navigation = useNavigation();
 
-  const [games, setGames] = useState([]); //inicializo como arreglo vacio
+  const [games, setGames] = useState([]); 
   const [emptyStore, setEmptyStore] = useState(true); //Marca si ya hay juegos registrados en la tienda
+  const [gamesPerLoad] = useState(5); 
+  const [startAfter,setStartAfter] = useState(Object);
+  const [lastGame,setLastGame] = useState(false);
 
   useEffect(() => {
-
-    const q = getReferenceToBD();
-    /* a partir de la query realizada, creamos un listener para que cada vez que se cree un nuevo 
-    juego en la bd, se actualize automaticamente la lista de juegos*/
-    const unsuscribe = onSnapshot(q, (querySnapshot) => {
-      setGames(
-        querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          name: doc.data().name,
-          platform: doc.data().platform,
-          price: doc.data().price,
-          createAt: doc.data().createAt,
-          genre: doc.data().genre,
-          releaseDate: doc.data().releaseDate,
-          imageUri: doc.data().imageUri,
-        }))
-      );
-      if (setGames.length > 0) {
-        setEmptyStore(false);
-      }
-    }
-    );
-    return unsuscribe;
+    getPosts();
   }, []);
+
+  async function getPosts() {
+    const gamesData = await fetchGames(gamesPerLoad,"price");
+    setGames([...games, ...gamesData.posts]);
+    setStartAfter(gamesData.lastVisible);
+    if (gamesData.posts.length !=0){
+      setEmptyStore(false);
+    }
+  }
+
+  async function getMoreGames() {
+    if (!lastGame) {
+      const gamesData = await fetchMoreGames("price",startAfter,gamesPerLoad);
+      setGames([...games, ...gamesData.posts]);
+      setStartAfter(gamesData.lastVisible);
+      gamesData.posts.length == 0?setLastGame(true):setLastGame(false);
+    }
+  }
 
   const renderList = ({
     name,
@@ -59,7 +58,6 @@ export default function GameList() {
     return (
       <View style={styles.list}>
         <Image source={{ uri: imageUri }} style={styles.listImage} />
-
         <View style={styles.listingRatingContainer}>
           <View style={{ flex: 1 }}>
             <Text style={styles.name}>{name}</Text>
@@ -81,7 +79,6 @@ export default function GameList() {
       <View style={styles.titleBox}>
         <Text style={styles.title}>Popular Games</Text>
       </View>
-
       {
         emptyStore?
           <View>
@@ -93,8 +90,13 @@ export default function GameList() {
       }
       <FlatList
         data={games}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item,index) => index.toString()}
         renderItem={({ item }) => renderList(item)}
+        onEndReached={getMoreGames}
+        onEndReachedThreshold = {0.01}
+        scrollEventThrottle= {150}
+        ListFooterComponent={ !lastGame && <ActivityIndicator  color = "#FFAC1C" size="large"/>
+        }
       />
     </View>
   );
