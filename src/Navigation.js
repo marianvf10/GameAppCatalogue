@@ -9,7 +9,8 @@ const Stack = createNativeStackNavigator();
 
 function MyStack() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator screenOptions={{
+      animation: 'slide_from_bottom'}}>
       <Stack.Screen name="Home" component={Home} options={{headerStyle:{backgroundColor:'#FF8C00'}}}/>
       <Stack.Screen
         name="Add"
