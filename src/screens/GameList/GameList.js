@@ -27,7 +27,7 @@ export default function GameList() {
   const [lastGame,setLastGame] = useState(false); 
 
   useEffect(() => {
-    getGames;
+    getGames();
   }, []);
 
   async function getGames() {
