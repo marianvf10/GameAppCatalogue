@@ -13,7 +13,6 @@ export function NavButton (props){
 
     const [navigation,name,nav,w,h]=[useNavigation(),props.name,props.nav,props.width==null? 140:props.width, props.height==null? 35:props.height];;
     const fontS = -0.1573*h + 0.1199*w+2.3602* name.split(' ').length;
-    console.log(fontS)
 
     return(
             <TouchableOpacity style = {[styles.button,{height:h,width:w}]} onPress={() => navigation.navigate(nav)}>
