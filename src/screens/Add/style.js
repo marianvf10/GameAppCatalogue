@@ -14,12 +14,19 @@ export const styles = StyleSheet.create({
         width: "90%",
         padding:10,
         marginVertical: 6,
-        borderWidth: 1,
         borderColor: "#D27D2D",
+        borderWidth: 1,
         color:'white',
         borderRadius: 6,
         margin: 12
       },
+      validInput:{
+        borderColor:'green',
+      }
+      ,
+      unvalidInput:{
+      }
+      ,
       buttonContainer: {
         flexDirection: "column",
         alignItems: "stretch",

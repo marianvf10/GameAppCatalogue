@@ -21,7 +21,7 @@ export default function GameList() {
   const navigation = useNavigation();
 
   const [games, setGames] = useState([]); //array where store games
-  const [emptyStore, setEmptyStore] = useState(true); //Marca si ya hay juegos registrados en la tienda
+  const [emptyStore, setEmptyStore] = useState(false); //Marca si ya hay juegos registrados en la tienda
   const [gamesPerLoad] = useState(5); //to choose how many documents fetch from db 
   const [startAfter,setStartAfter] = useState(Object); //use for set a start from "x game"
   const [lastGame,setLastGame] = useState(false); 
@@ -35,8 +35,8 @@ export default function GameList() {
     const gamesData = await fetchGames(gamesPerLoad,"price");
     setGames([...games, ...gamesData.posts]); //store games 
     setStartAfter(gamesData.lastVisible); //set the start game to call in the next fetch 
-    if (gamesData.posts.length !=0){
-      setEmptyStore(false);
+    if (gamesData.posts.length ==0){
+      setEmptyStore(true);
     }
   }
 
@@ -100,7 +100,8 @@ export default function GameList() {
         onEndReached={getMoreGames}
         onEndReachedThreshold = {0.01}
         scrollEventThrottle= {150}
-        ListFooterComponent={ !lastGame && <ActivityIndicator  color = "#FFAC1C" size="large"/>
+        //
+        ListFooterComponent={ !lastGame && !emptyStore && <ActivityIndicator  color = "#FFAC1C" size="large"/>
         }
       />
     </View>

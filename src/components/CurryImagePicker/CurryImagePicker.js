@@ -10,6 +10,7 @@ import { ActionButton } from "../Button/Button";
 const CurryImagePicker = ({ addImage }) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [elementVisible, setElementVisible] = useState(true);//Indica si hay el icono de camara de fotos es visible.
+  const[imageUploaded,setImageUploaded] = useState(false);//Indica si la imagen ya ha sido cargada en la app.
 
   const PlaceholderImage = ""; //ruta de prueba para probar ImagePicker
 
@@ -24,6 +25,7 @@ const CurryImagePicker = ({ addImage }) => {
       const source = result.assets[0].uri;
       setSelectedImage(source);
       addImage(source);
+      setImageUploaded(true);
     };
 
     setElementVisible(false);
@@ -31,7 +33,7 @@ const CurryImagePicker = ({ addImage }) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.imageContainer}>
+      <View style={[styles.imageContainer,imageUploaded? styles.imageUploaded:styles.imageForUpload]}>
       {/*Condicional que indica si debe o no aparecer el icono de camara de fotos, en funcion de si ya se cargo
       una imagen */}
       {elementVisible?<FontAwesome name="camera" size={24} color="#D27D2D" style={styles.icon}/>:null}

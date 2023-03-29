@@ -15,12 +15,20 @@ export const styles = StyleSheet.create({
     },
     imageContainer:{
         borderWidth:1,
-        borderColor: '#D27D2D',
         borderWidth:4,
         borderRadius:4,
         backgroundCcolor:'black',
         width:'80%',
         height: 180
+    },
+    imageUploaded:
+    {
+        borderColor:'green'
+    }
+    ,
+    imageForUpload:
+    {
+        borderColor: '#D27D2D'
     },
     button:{
         margin:8

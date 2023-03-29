@@ -11,7 +11,7 @@ import { uploadGame } from "../../services/games";
 
 export default function Add() {
   const navigation = useNavigation();
- 
+
   //este es el estado del objeto que se tiene que guardar, estos atributos se reciben del usuario
   const [newItem, setNewItem] = useState({
     name: "",
@@ -21,8 +21,25 @@ export default function Add() {
     releaseDate: "",
   });
 
+  const regularExpresion =
+  {
+    //(\:\d*)?\d
+    //[a-zA-Z0-9]+
+    productName: /^([a-zA-Z0-9]+\s?)+(\:[a-zA-Z0-9\s]*)?\w$/,
+    platform:/^[a-zA-Z0-9]+$/,
+    price:/^\d*(\.\d*)?\d$/,
+    genre:/^[a-zA-Z]+$/
+  };
+
   const [addD, setNewDate] = useState("");
   const [selectedImage, setNewImage] = useState(null);
+
+  //Estados que marcan si el respectivo input fue correctamente validado
+  const[nameValidated,setNameValidated] = useState(false);
+  const[platformValidated,setPlatformValidated] = useState(false);
+  const[priceValidated,setPriceValidated] = useState(false);
+  const[genreValidated,setGenreValidated] = useState(false);
+  const allValidated = nameValidated&&platformValidated&&priceValidated&&genreValidated&&selectedImage!=null;
 
   //con esta funcion agrego un nuevo documento a la bd
   const onSend = async () => {
@@ -40,7 +57,7 @@ export default function Add() {
   const addImage = (newImage) => {
     setNewImage(newImage);
   };
-
+  
   return (
       
       <ScrollView
@@ -50,32 +67,36 @@ export default function Add() {
       <Text style={styles.title}>Add a New Game</Text>
       <CurryImagePicker addImage={addImage} />
       <TextInput
-        style={styles.inputContainer}
+        style={[styles.inputContainer,nameValidated?styles.validInput:styles.unvalidInput]}
         placeholderTextColor="white"
         placeholder="Product Name"
-        onChangeText={(text) => setNewItem({ ...newItem, name: text })}
+        onChangeText={(text) => {setNameValidated(regularExpresion.productName.test(text));
+                                setNewItem({ ...newItem, name: text })}}
       />
       <TextInput
-        style={styles.inputContainer}
+        style={[styles.inputContainer,platformValidated?styles.validInput:styles.unvalidInput]}
         placeholderTextColor="white"
         placeholder="Platform"
-        onChangeText={(text) => setNewItem({ ...newItem, platform: text })}
+        onChangeText={(text) => {setPlatformValidated(regularExpresion.platform.test(text));
+                              setNewItem({ ...newItem, platform: text })}}
       />
       <TextInput
-        style={styles.inputContainer}
+        style={[styles.inputContainer,priceValidated?styles.validInput:styles.unvalidInput]}
         placeholderTextColor="white"
         placeholder="Price"
         keyboardType="numeric"
-        onChangeText={(text) => setNewItem({ ...newItem, price: text })}
+        onChangeText={(text) => {setPriceValidated(regularExpresion.price.test(text));
+                                setNewItem({ ...newItem, price: text })}}
       />
       <TextInput
-        style={styles.inputContainer}
+        style={[styles.inputContainer,genreValidated?styles.validInput:styles.unvalidInput]}
         placeholderTextColor="white"
         placeholder="Genre"
-        onChangeText={(text) => setNewItem({ ...newItem, genre: text })}
+        onChangeText={(text) => {setGenreValidated(regularExpresion.genre.test(text));
+                                setNewItem({ ...newItem, genre: text })}}
       />
       <MyDatePicker addDate={addDate} />
-        <ActionButton name="Upload game" action={onSend}/>
+        <ActionButton name="Upload game" disabled={allValidated?false:true} action={onSend}/>
     </ScrollView>
     
   );
