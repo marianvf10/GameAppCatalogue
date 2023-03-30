@@ -10,6 +10,7 @@ const MyDatePicker = ({ addDate }) => {
   const [mode, setMode] = useState("date");
   const [show, setShow] = useState(false);
   const [text, setText] = useState("Release date undefined");
+  const[dateUploaded,setDateUploaded] = useState(false);
 
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
@@ -25,15 +26,15 @@ const MyDatePicker = ({ addDate }) => {
       tempDate.getFullYear();
 
     setText(fDate);
-
     addDate(fDate);
+    setDateUploaded(true);
   };
   const showMode = (currentMode) => {
     setShow(true);
     setMode(currentMode);
   };
   return (
-    <View style={styles.container}>
+    <View style={[styles.container,dateUploaded?styles.dateUploaded:styles.dateForUpload]}>
       <Text style={styles.text}>{text}</Text>
       <View style={{ margin: 10}}>
         <ActionButton

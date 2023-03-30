@@ -21,14 +21,13 @@ export default function Add() {
     releaseDate: "",
   });
 
+  //Expresiones regulares usadas para validaciones
   const regularExpresion =
   {
-    //(\:\d*)?\d
-    //[a-zA-Z0-9]+
     productName: /^([a-zA-Z0-9]+\s?)+(\:[a-zA-Z0-9\s]*)?\w$/,
     platform:/^[a-zA-Z0-9]+$/,
     price:/^\d*(\.\d*)?\d$/,
-    genre:/^[a-zA-Z]+$/
+    genre:/^[a-zA-Z\s]+$/
   };
 
   const [addD, setNewDate] = useState("");
@@ -39,7 +38,10 @@ export default function Add() {
   const[platformValidated,setPlatformValidated] = useState(false);
   const[priceValidated,setPriceValidated] = useState(false);
   const[genreValidated,setGenreValidated] = useState(false);
-  const allValidated = nameValidated&&platformValidated&&priceValidated&&genreValidated&&selectedImage!=null;
+  const[dateValidated,setDateValidated]=useState(false);
+
+  //este booleano sirve como flag para mantener enable o disable el upload button
+  const allValidated = nameValidated&&platformValidated&&priceValidated&&genreValidated&&dateValidated&&selectedImage!=null;
 
   //con esta funcion agrego un nuevo documento a la bd
   const onSend = async () => {
@@ -49,6 +51,7 @@ export default function Add() {
 
   //con esta funcion recibo informacion del componente DatePicker
   const addDate = (newDate) => {
+    setDateValidated(true);
     setNewDate(newDate.toString());
     setNewItem({ ...newItem, releaseDate: newDate });
   };
@@ -56,6 +59,7 @@ export default function Add() {
   //con esta funcion recibo informacion del componente CurryImagePicker
   const addImage = (newImage) => {
     setNewImage(newImage);
+    console.log('d');
   };
   
   return (

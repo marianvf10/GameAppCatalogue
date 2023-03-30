@@ -12,8 +12,8 @@ const CurryImagePicker = ({ addImage }) => {
   const [elementVisible, setElementVisible] = useState(true);//Indica si hay el icono de camara de fotos es visible.
   const[imageUploaded,setImageUploaded] = useState(false);//Indica si la imagen ya ha sido cargada en la app.
 
-  const PlaceholderImage = ""; //ruta de prueba para probar ImagePicker
-
+  const PlaceholderImage = ""; 
+  
   const pickImageAsync = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
@@ -26,9 +26,10 @@ const CurryImagePicker = ({ addImage }) => {
       setSelectedImage(source);
       addImage(source);
       setImageUploaded(true);
+      setElementVisible(false);
     };
 
-    setElementVisible(false);
+
   };
 
   return (
