@@ -1,2 +1,0 @@
-# GameAppCatalogue
-game catalogue
